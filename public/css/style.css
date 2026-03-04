@@ -378,44 +378,43 @@ header h1 {
     background: linear-gradient(135deg, #ff7e5f, #feb47b);
 }
 
-/* Tabs */
-.tabs {
-    padding: 0;
-    overflow: hidden;
+/* Messenger card (unified interface) */
+.messenger-card {
+    padding: 30px;
 }
-.tab-headers {
-    display: flex;
-    border-bottom: 2px solid #e9ecef;
-    margin-bottom: 20px;
+.messenger-card h2 {
+    font-size: 2.2rem;
+    margin-bottom: 10px;
 }
-.tab-btn {
-    padding: 15px 25px;
-    background: none;
-    border: none;
+.messenger-card .subtitle {
     font-size: 1.1rem;
-    font-weight: 600;
-    color: #6c757d;
-    cursor: pointer;
+    color: #666;
+    margin-bottom: 30px;
+}
+.chat-section,
+.file-section,
+.calls-section,
+.screen-section {
+    margin-bottom: 40px;
+    padding-bottom: 30px;
+    border-bottom: 2px solid #f1f8ff;
+}
+.chat-section:last-child,
+.file-section:last-child,
+.calls-section:last-child,
+.screen-section:last-child {
+    border-bottom: none;
+}
+.chat-section h3,
+.file-section h3,
+.calls-section h3,
+.screen-section h3 {
+    font-size: 1.8rem;
+    margin-bottom: 15px;
+    color: #2d3748;
     display: flex;
     align-items: center;
     gap: 10px;
-    transition: all 0.3s;
-    border-bottom: 3px solid transparent;
-}
-.tab-btn:hover {
-    color: #4776E6;
-}
-.tab-btn.active {
-    color: #4776E6;
-    border-bottom-color: #4776E6;
-    background: #f1f8ff;
-}
-.tab-content {
-    display: none;
-    padding: 20px 0;
-}
-.tab-content.active {
-    display: block;
 }
 
 /* Chat */
@@ -501,6 +500,70 @@ header h1 {
     flex: 1;
     min-width: 120px;
     max-width: 200px;
+}
+
+/* Modal */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2000;
+    padding: 20px;
+}
+.modal.hidden {
+    display: none;
+}
+.modal > div {
+    background: white;
+    border-radius: 20px;
+    max-width: 800px;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+}
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 25px 30px;
+    border-bottom: 2px solid #e9ecef;
+    background: #f8f9fa;
+    border-radius: 20px 20px 0 0;
+}
+.modal-header h3 {
+    margin: 0;
+    font-size: 1.8rem;
+    color: #2d3748;
+}
+.modal-close {
+    background: none;
+    border: none;
+    font-size: 2rem;
+    color: #6c757d;
+    cursor: pointer;
+    line-height: 1;
+    padding: 0;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: background 0.3s;
+}
+.modal-close:hover {
+    background: #e9ecef;
+    color: #495057;
+}
+.modal-body {
+    padding: 30px;
 }
 
 /* Video containers */

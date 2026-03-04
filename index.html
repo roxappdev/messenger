@@ -52,16 +52,12 @@
             </div>
         </div>
 
-        <div class="tabs card">
-            <div class="tab-headers">
-                <button class="tab-btn active" data-tab="chat"><i class="fas fa-comment-dots"></i> Chat</button>
-                <button class="tab-btn" data-tab="files"><i class="fas fa-file-import"></i> Files</button>
-                <button class="tab-btn" data-tab="calls"><i class="fas fa-phone-alt"></i> Calls</button>
-                <button class="tab-btn" data-tab="screen"><i class="fas fa-desktop"></i> Screen Share</button>
-            </div>
+        <div class="messenger-card card">
+            <h2><i class="fas fa-comments"></i> Messenger</h2>
+            <p class="subtitle">All-in-one communication: chat, file transfer, calls, and screen sharing in a single interface.</p>
 
-            <div class="tab-content active" id="chat-tab">
-                <h3><i class="fas fa-comments"></i> Live Chat</h3>
+            <div class="chat-section">
+                <h3><i class="fas fa-comment-dots"></i> Live Chat</h3>
                 <div class="chat-container">
                     <div class="chat-messages" id="chatMessages">
                         <div class="message system">
@@ -86,60 +82,75 @@
                 </div>
             </div>
 
-            <div class="tab-content" id="files-tab">
-                <h3><i class="fas fa-file-import"></i> File Transfer</h3>
-                <p>Select files to send directly to the connected peer. Files are transferred over a secure WebRTC channel.</p>
-                <div class="file-upload">
-                    <input type="file" id="fileInput" multiple>
-                    <label for="fileInput" class="btn upload">
-                        <i class="fas fa-cloud-upload-alt"></i> Choose Files
-                    </label>
-                    <button id="sendFilesBtn" class="btn primary" disabled>
-                        <i class="fas fa-paper-plane"></i> Send Selected Files
-                    </button>
+            <div class="file-section modal hidden" id="fileModal">
+                <div class="modal-header">
+                    <h3><i class="fas fa-file-import"></i> File Transfer</h3>
+                    <button class="modal-close">&times;</button>
                 </div>
-                <div id="fileList" class="file-list"></div>
-                <h4>Received Files</h4>
-                <div id="receivedFiles" class="received-list">
-                    <p class="empty">No files received yet.</p>
+                <div class="modal-body">
+                    <p>Select files to send directly to the connected peer. Files are transferred over a secure WebRTC channel.</p>
+                    <div class="file-upload">
+                        <input type="file" id="fileInput" multiple>
+                        <label for="fileInput" class="btn upload">
+                            <i class="fas fa-cloud-upload-alt"></i> Choose Files
+                        </label>
+                        <button id="sendFilesBtn" class="btn primary" disabled>
+                            <i class="fas fa-paper-plane"></i> Send Selected Files
+                        </button>
+                    </div>
+                    <div id="fileList" class="file-list"></div>
+                    <h4>Received Files</h4>
+                    <div id="receivedFiles" class="received-list">
+                        <p class="empty">No files received yet.</p>
+                    </div>
                 </div>
             </div>
 
-            <div class="tab-content" id="calls-tab">
-                <h3><i class="fas fa-phone-alt"></i> Audio & Video Calls</h3>
-                <p>Start a real‑time audio or video call with your peer. Ensure you have granted camera/microphone permissions.</p>
-                <div class="call-controls">
-                    <button id="startAudioCall" class="btn primary"><i class="fas fa-phone"></i> Audio Call</button>
-                    <button id="startVideoCall" class="btn primary"><i class="fas fa-video"></i> Video Call</button>
-                    <button id="endCall" class="btn secondary" disabled><i class="fas fa-phone-slash"></i> End Call</button>
+            <div class="calls-section modal hidden" id="callsModal">
+                <div class="modal-header">
+                    <h3><i class="fas fa-phone-alt"></i> Audio & Video Calls</h3>
+                    <button class="modal-close">&times;</button>
                 </div>
-                <div class="video-container">
-                    <div class="video-wrapper">
-                        <h4>Your Video</h4>
-                        <video id="localVideo" autoplay muted playsinline></video>
+                <div class="modal-body">
+                    <p>Start a real‑time audio or video call with your peer. Ensure you have granted camera/microphone permissions.</p>
+                    <div class="call-controls">
+                        <button id="startAudioCall" class="btn primary"><i class="fas fa-phone"></i> Audio Call</button>
+                        <button id="startVideoCall" class="btn primary"><i class="fas fa-video"></i> Video Call</button>
+                        <button id="endCall" class="btn secondary" disabled><i class="fas fa-phone-slash"></i> End Call</button>
                     </div>
-                    <div class="video-wrapper">
-                        <h4>Peer Video</h4>
-                        <video id="remoteVideo" autoplay playsinline></video>
+                    <div class="video-container">
+                        <div class="video-wrapper">
+                            <h4>Your Video</h4>
+                            <video id="localVideo" autoplay muted playsinline></video>
+                        </div>
+                        <div class="video-wrapper">
+                            <h4>Peer Video</h4>
+                            <video id="remoteVideo" autoplay playsinline></video>
+                        </div>
                     </div>
-                </div>
-                <div class="call-status">
-                    <p id="callStatus">Ready to call.</p>
+                    <div class="call-status">
+                        <p id="callStatus">Ready to call.</p>
+                    </div>
                 </div>
             </div>
 
-            <div class="tab-content" id="screen-tab">
-                <h3><i class="fas fa-desktop"></i> Screen Sharing</h3>
-                <p>Share your entire screen, a specific window, or a browser tab with your peer.</p>
-                <div class="screen-controls">
-                    <button id="startScreenShare" class="btn primary"><i class="fas fa-share-square"></i> Start Sharing</button>
-                    <button id="stopScreenShare" class="btn secondary" disabled><i class="fas fa-stop"></i> Stop Sharing</button>
+            <div class="screen-section modal hidden" id="screenModal">
+                <div class="modal-header">
+                    <h3><i class="fas fa-desktop"></i> Screen Sharing</h3>
+                    <button class="modal-close">&times;</button>
                 </div>
-                <div class="screen-preview">
-                    <h4>Shared Screen Preview</h4>
-                    <video id="screenVideo" autoplay playsinline></video>
+                <div class="modal-body">
+                    <p>Share your entire screen, a specific window, or a browser tab with your peer.</p>
+                    <div class="screen-controls">
+                        <button id="startScreenShare" class="btn primary"><i class="fas fa-share-square"></i> Start Sharing</button>
+                        <button id="stopScreenShare" class="btn secondary" disabled><i class="fas fa-stop"></i> Stop Sharing</button>
+                    </div>
+                    <div class="screen-preview">
+                        <h4>Shared Screen Preview</h4>
+                        <video id="screenVideo" autoplay playsinline></video>
+                    </div>
+                    <p class="small">Note: Screen sharing works only after a peer connection is established.</p>
                 </div>
-                <p class="small">Note: Screen sharing works only after a peer connection is established.</p>
             </div>
         </div>
 
@@ -177,24 +188,54 @@
     <script src="./public/js/screen.js"></script>
     <script src="./public/js/messenger.js"></script>
     <script>
-        // Make chat action buttons trigger the original buttons
+        // Modal management
         document.addEventListener('DOMContentLoaded', () => {
-            const chatAudioBtn = document.getElementById('chatAudioCall');
-            const chatVideoBtn = document.getElementById('chatVideoCall');
-            const chatScreenBtn = document.getElementById('chatScreenShare');
-            const originalAudioBtn = document.getElementById('startAudioCall');
-            const originalVideoBtn = document.getElementById('startVideoCall');
-            const originalScreenBtn = document.getElementById('startScreenShare');
+            const modals = {
+                audio: document.getElementById('callsModal'),
+                video: document.getElementById('callsModal'), // same modal for both audio/video
+                screen: document.getElementById('screenModal'),
+                file: document.getElementById('fileModal')
+            };
+            
+            // Buttons in chat
+            document.getElementById('chatAudioCall').addEventListener('click', () => openModal('audio'));
+            document.getElementById('chatVideoCall').addEventListener('click', () => openModal('video'));
+            document.getElementById('chatScreenShare').addEventListener('click', () => openModal('screen'));
+            // Also need a button for file transfer? Currently not in chat-actions. We'll add later if needed.
 
-            if (chatAudioBtn && originalAudioBtn) {
-                chatAudioBtn.addEventListener('click', () => originalAudioBtn.click());
+            // Close buttons
+            document.querySelectorAll('.modal-close').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const modal = this.closest('.modal');
+                    closeModal(modal);
+                });
+            });
+
+            // Close modal when clicking outside
+            document.querySelectorAll('.modal').forEach(modal => {
+                modal.addEventListener('click', (e) => {
+                    if (e.target === modal) {
+                        closeModal(modal);
+                    }
+                });
+            });
+
+            function openModal(type) {
+                const modal = modals[type];
+                if (!modal) return;
+                // Hide all modals first
+                document.querySelectorAll('.modal').forEach(m => m.classList.add('hidden'));
+                // Show this modal
+                modal.classList.remove('hidden');
+                console.log(`Opened ${type} modal`);
             }
-            if (chatVideoBtn && originalVideoBtn) {
-                chatVideoBtn.addEventListener('click', () => originalVideoBtn.click());
+
+            function closeModal(modal) {
+                modal.classList.add('hidden');
             }
-            if (chatScreenBtn && originalScreenBtn) {
-                chatScreenBtn.addEventListener('click', () => originalScreenBtn.click());
-            }
+
+            // Ensure original buttons inside modals still work
+            // They already have event listeners from calls.js and screen.js
         });
     </script>
 </body>
