@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>P2P Messenger - Secure Peer-to-Peer Chat, Calls & File Sharing</title>
+    <link rel="stylesheet" href="./public/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-comments"></i> P2P Messenger</h1>
+            <p class="subtitle">Secure peer‑to‑peer messaging, audio/video calls, screen sharing, and file transfer. No server storage, fully encrypted.</p>
+        </header>
+
+        <div class="instruction-card card">
+            <h2><i class="fas fa-info-circle"></i> How to Use</h2>
+            <ol class="instruction-list">
+                <li><strong>Create a Room</strong> – Click "Create Room" to generate a unique link. Share it with your contact.</li>
+                <li><strong>Connect</strong> – Once they open the link, a direct P2P connection is established.</li>
+                <li><strong>Communicate</strong> – Use the tabs to chat, send files, start audio/video calls, or share your screen.</li>
+                <li><strong>Secure & Private</strong> – All data flows directly between you and the peer, encrypted via WebRTC.</li>
+            </ol>
+            <p class="small">No registration, no logs, fully peer‑to‑peer.</p>
+        </div>
+
+        <div class="card connection-status-card">
+            <h2><i class="fas fa-exchange-alt"></i> Connection Status</h2>
+            <div class="connection-info">
+                <div class="info-row">
+                    <span>Peer ID:</span>
+                    <span id="peerId">Not connected</span>
+                </div>
+                <div class="info-row">
+                    <span>Channel:</span>
+                    <span id="channelStatus" class="badge offline">Offline</span>
+                </div>
+                <div class="info-row">
+                    <span>Active calls:</span>
+                    <span id="activeCalls">0</span>
+                </div>
+                <div class="info-row">
+                    <span>Messages exchanged:</span>
+                    <span id="messagesCount">0</span>
+                </div>
+            </div>
+            <div class="progress-container hidden">
+                <div class="progress-bar" id="progressBar"></div>
+                <div class="progress-text" id="progressText">0%</div>
+            </div>
+        </div>
+
+        <div class="tabs card">
+            <div class="tab-headers">
+                <button class="tab-btn active" data-tab="chat"><i class="fas fa-comment-dots"></i> Chat</button>
+                <button class="tab-btn" data-tab="files"><i class="fas fa-file-import"></i> Files</button>
+                <button class="tab-btn" data-tab="calls"><i class="fas fa-phone-alt"></i> Calls</button>
+                <button class="tab-btn" data-tab="screen"><i class="fas fa-desktop"></i> Screen Share</button>
+            </div>
+
+            <div class="tab-content active" id="chat-tab">
+                <h3><i class="fas fa-comments"></i> Live Chat</h3>
+                <div class="chat-container">
+                    <div class="chat-messages" id="chatMessages">
+                        <div class="message system">
+                            <span>Welcome to P2P Messenger. Start by creating a room and sharing the link.</span>
+                        </div>
+                    </div>
+                    <div class="chat-input">
+                        <input type="text" id="messageInput" placeholder="Type your message..." autocomplete="off">
+                        <button id="sendMessageBtn" class="btn primary"><i class="fas fa-paper-plane"></i> Send</button>
+                    </div>
+                    <div class="chat-actions">
+                        <button class="btn primary chat-action-btn" id="chatAudioCall" title="Audio Call">
+                            <i class="fas fa-phone"></i> Audio Call
+                        </button>
+                        <button class="btn primary chat-action-btn" id="chatVideoCall" title="Video Call">
+                            <i class="fas fa-video"></i> Video Call
+                        </button>
+                        <button class="btn primary chat-action-btn" id="chatScreenShare" title="Share Screen">
+                            <i class="fas fa-desktop"></i> Share Screen
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tab-content" id="files-tab">
+                <h3><i class="fas fa-file-import"></i> File Transfer</h3>
+                <p>Select files to send directly to the connected peer. Files are transferred over a secure WebRTC channel.</p>
+                <div class="file-upload">
+                    <input type="file" id="fileInput" multiple>
+                    <label for="fileInput" class="btn upload">
+                        <i class="fas fa-cloud-upload-alt"></i> Choose Files
+                    </label>
+                    <button id="sendFilesBtn" class="btn primary" disabled>
+                        <i class="fas fa-paper-plane"></i> Send Selected Files
+                    </button>
+                </div>
+                <div id="fileList" class="file-list"></div>
+                <h4>Received Files</h4>
+                <div id="receivedFiles" class="received-list">
+                    <p class="empty">No files received yet.</p>
+                </div>
+            </div>
+
+            <div class="tab-content" id="calls-tab">
+                <h3><i class="fas fa-phone-alt"></i> Audio & Video Calls</h3>
+                <p>Start a real‑time audio or video call with your peer. Ensure you have granted camera/microphone permissions.</p>
+                <div class="call-controls">
+                    <button id="startAudioCall" class="btn primary"><i class="fas fa-phone"></i> Audio Call</button>
+                    <button id="startVideoCall" class="btn primary"><i class="fas fa-video"></i> Video Call</button>
+                    <button id="endCall" class="btn secondary" disabled><i class="fas fa-phone-slash"></i> End Call</button>
+                </div>
+                <div class="video-container">
+                    <div class="video-wrapper">
+                        <h4>Your Video</h4>
+                        <video id="localVideo" autoplay muted playsinline></video>
+                    </div>
+                    <div class="video-wrapper">
+                        <h4>Peer Video</h4>
+                        <video id="remoteVideo" autoplay playsinline></video>
+                    </div>
+                </div>
+                <div class="call-status">
+                    <p id="callStatus">Ready to call.</p>
+                </div>
+            </div>
+
+            <div class="tab-content" id="screen-tab">
+                <h3><i class="fas fa-desktop"></i> Screen Sharing</h3>
+                <p>Share your entire screen, a specific window, or a browser tab with your peer.</p>
+                <div class="screen-controls">
+                    <button id="startScreenShare" class="btn primary"><i class="fas fa-share-square"></i> Start Sharing</button>
+                    <button id="stopScreenShare" class="btn secondary" disabled><i class="fas fa-stop"></i> Stop Sharing</button>
+                </div>
+                <div class="screen-preview">
+                    <h4>Shared Screen Preview</h4>
+                    <video id="screenVideo" autoplay playsinline></video>
+                </div>
+                <p class="small">Note: Screen sharing works only after a peer connection is established.</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2><i class="fas fa-link"></i> Create or Join a Room</h2>
+            <p>Generate a unique room link and share it with your contact, or join an existing room via a link.</p>
+            <div class="input-group">
+                <input type="text" id="roomIdInput" placeholder="Paste room ID to join">
+                <button id="joinRoomBtn" class="btn secondary"><i class="fas fa-sign-in-alt"></i> Join Room</button>
+                <button id="createRoomBtn" class="btn primary"><i class="fas fa-plus-circle"></i> Create Room</button>
+            </div>
+            <div id="roomInfo" class="hidden">
+                <p>Your room link:</p>
+                <div class="link-box">
+                    <input type="text" id="roomLink" readonly>
+                    <button id="copyLinkBtn" class="btn icon" title="Copy">
+                        <i class="far fa-copy"></i>
+                    </button>
+                    <button id="shareBtn" class="btn icon" title="Share via WhatsApp">
+                        <i class="fab fa-whatsapp"></i>
+                    </button>
+                </div>
+                <p class="small">Send this link to your contact. Waiting for peer to join…</p>
+                <div class="status waiting">
+                    <i class="fas fa-hourglass-half"></i> <span id="statusText">Waiting for connection</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/peerjs@1.4.7/dist/peerjs.min.js"></script>
+    <script src="./public/js/app.js"></script>
+    <script src="./public/js/webrtc.js"></script>
+    <script src="./public/js/calls.js"></script>
+    <script src="./public/js/screen.js"></script>
+    <script src="./public/js/messenger.js"></script>
+    <script>
+        // Make chat action buttons trigger the original buttons
+        document.addEventListener('DOMContentLoaded', () => {
+            const chatAudioBtn = document.getElementById('chatAudioCall');
+            const chatVideoBtn = document.getElementById('chatVideoCall');
+            const chatScreenBtn = document.getElementById('chatScreenShare');
+            const originalAudioBtn = document.getElementById('startAudioCall');
+            const originalVideoBtn = document.getElementById('startVideoCall');
+            const originalScreenBtn = document.getElementById('startScreenShare');
+
+            if (chatAudioBtn && originalAudioBtn) {
+                chatAudioBtn.addEventListener('click', () => originalAudioBtn.click());
+            }
+            if (chatVideoBtn && originalVideoBtn) {
+                chatVideoBtn.addEventListener('click', () => originalVideoBtn.click());
+            }
+            if (chatScreenBtn && originalScreenBtn) {
+                chatScreenBtn.addEventListener('click', () => originalScreenBtn.click());
+            }
+        });
+    </script>
+</body>
+</html>
